@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      # NPM Admin Web Interface
+      - '81:81'
+
+      # HTTP/HTTPS for Web Interface
+      - '80:80'
+      - '443:443'
+
+      # Nick's Mining Pool Stratum Ports
+      - '6002:6002'  # Bitcoin Cash (BCH)
+      - '6003:6003'  # Dogecoin (DOGE)
+      - '6004:6004'  # Bitcoin (BTC)
+      - '6005:6005'  # Bitcoin SV (BSV)
+      - '6007:6007'  # eCash (XEC)
+
+    environment:
+      # Database Configuration
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm"
+      DB_MYSQL_NAME: "npm"
+
+      # Disable IPv6 (optional, enable if you need IPv6)
+      DISABLE_IPV6: 'true'
+
+    volumes:
+      # NPM Data (configurations, logs)
+      - ./data:/data
+
+      # SSL Certificates (Let's Encrypt)
+      - ./letsencrypt:/etc/letsencrypt
+
+    depends_on:
+      - db
+
+    networks:
+      - npm-network
+
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: nginx-proxy-manager-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    volumes:
+      # Database storage
+      - ./data/mysql:/var/lib/mysql
+
+    networks:
+      - npm-network
+
+networks:
+  npm-network:
+    name: npm-network
+    driver: bridge

@@ -1,0 +1,64 @@
+# Nick's Mining Pool - Git Ignore File
+
+# NPM Runtime Data (generated during deployment)
+data/
+letsencrypt/
+*.log
+
+# Docker volumes
+mysql/
+
+# Sensitive configuration (customize as needed)
+*.key
+*.pem
+*.crt
+secrets/
+credentials/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+
+# Compressed files (except distribution archives)
+*.zip
+*.tar.gz
+*.rar
+
+# Node modules (if using any Node.js tools)
+node_modules/
+
+# Python cache (if using any Python tools)
+__pycache__/
+*.pyc
+*.pyo
+
+# Local test files
+test-local/
+scratch/
